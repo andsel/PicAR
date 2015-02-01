@@ -1,0 +1,10 @@
+Semplice guida per l'utilizzo di Picar.
+
+ - scompattare l'archivio zip in una cartella.
+ - lanciare il programma launch.bat che aprirà una schermata dos (NB non dev'essere chiusa con la X) e navigare col browser su localhost:8080
+ - Esiste un utente preconfigurato con il ruolo di  Catalogator (utente: Utente, password: pazzwork)
+ - Esiste un utente col ruolo di amministratore in grado di poter creare altri utenti catalogatori e di modificarne la password
+    utente: admin, password: pazzwork
+
+ 
+ - Per spegnere il programma, mettere il puntatore nella finestra DOS e premere i tasti CTRL+C

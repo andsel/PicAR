@@ -1,0 +1,31 @@
+.mender-input-search {
+    font-size: 20px;
+    height: 25px;
+}
+
+.mender-select-search {
+    height: 35px;
+    font-size: 20px;
+}
+
+
+.professional-summary {
+    background-color: #D9EDF7;
+    border-color: #BCE8F1;
+    color: #3A87AD;
+    border-radius: 4px 4px 4px 4px;
+}
+
+
+.mender-navbar-login {
+    /*display: inline-block;*/
+    /*margin-bottom: 0;*/
+    /*margin-top: 5px;*/
+    /*border-radius: 8px 8px 3px 3px;*/
+    /*font-size: 14px;*/
+    /*height: 50px;*/
+    /*line-height: 20px;*/
+    /*padding: 4px 6px;*/
+    margin-left: 10px;
+    margin-right: 10px;
+}

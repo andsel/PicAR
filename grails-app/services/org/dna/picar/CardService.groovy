@@ -24,9 +24,6 @@ class CardService {
 
 
     def updatedCard(Card card) {
-        if (card.localization) {
-            autocompletions.localization << card.localization
-        }
         if (card.author) {
             autocompletions.author << card.author
         }

@@ -78,11 +78,6 @@
                         </tr>
 
                         <tr>
-                            <td><b><g:message code="card.localization.label" default="Localization" /></b></td>
-                            <td><g:fieldValue bean="${cardInstance}" field="localization"/></td>
-                        </tr>
-
-                        <tr>
                             <td><b><g:message code="card.inscription.label" default="Inscription" /></b></td>
                             <td><g:fieldValue bean="${cardInstance}" field="inscription"/></td>
                         </tr>

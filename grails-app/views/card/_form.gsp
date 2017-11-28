@@ -13,19 +13,18 @@
     $('#author').typeahead({source: typeheadCallback});
     $('#printer').typeahead({source: typeheadCallback});
     $('#editor').typeahead({source: typeheadCallback});
-    $('#localization').typeahead({source: typeheadCallback});
 
     function bindAddBibliographyAction() {
         $('#addBibliographyAction').click(function () {
             var anchor = $('#bibliographyList').last();
-            var lastInput = $('textarea[id^="bibliography["]').last();
+            var lastInput = $('input[id^="bibliography["]').last();
             var id = $(lastInput).attr('id');
             var maxIndex = parseInt(id.replace('bibliography[', '').replace(']', ''));
 
             var nextIndex = maxIndex + 1;
-            $('<div class="control-group"><div class="controls"><textarea rows="5" cols="40" class="span12" id="bibliography['+ nextIndex +']" value="" name="bibliography['+ nextIndex +']"></textarea></div></div>').appendTo(anchor);
+            $('<div class="control-group"><div class="controls"><input class="input-xxlarge" id="bibliography['+ nextIndex +']" value="" name="bibliography['+ nextIndex +']" type="text"></input></div></div>').appendTo(anchor);
 
-            var addedInput = $('textarea[id^="bibliography[' + nextIndex + ']"]');
+            var addedInput = $('input[id^="bibliography[' + nextIndex + ']"]');
             addedInput.focus();
             $('html, body').animate({
                 scrollTop: $(addedInput).offset().top
@@ -142,23 +141,14 @@
             <div class="control-group ">
                 <label class="control-label" for="title"><g:message code="card.title.label" default="Title"/></label>
                 <div class="controls ${hasErrors(bean: 'cardInstance', field: 'title', 'error')}">
-                    <g:field class="span12" name="title" type="text" value="${cardInstance?.title}"/>
+                    <g:textArea name="subject" value="${cardInstance?.title}" rows="3" cols="40" class="span12"/>
                 </div>
             </div>
 
             <div class="control-group ">
                 <label class="control-label" for="subject"><g:message code="card.subject.label"/></label>
                 <div class="controls ${hasErrors(bean: 'cardInstance', field: 'subject', 'error')}">
-                    <g:textArea name="subject" value="${cardInstance.subject}" rows="5" cols="40" class="span12"/>
-                </div>
-            </div>
-
-            <div class="control-group ">
-                <label class="control-label" for="localization"><g:message code="card.localization.label"/></label>
-                <div class="controls ${hasErrors(bean: 'cardInstance', field: 'localization', 'error')}">
-                    <g:field class="span12" name="localization" type="text" value="${cardInstance?.localization}"
-                             data-link="${createLink(controller: 'card', action: 'autoCompletion', params: ['field': 'localization'])}"
-                             autocomplete="off"/>
+                    <g:field class="span12" name="title" type="text" value="${cardInstance.subject}"/>
                 </div>
             </div>
 
@@ -300,7 +290,6 @@
         </div>
 
         <div class="row-fluid">
-            %{--<f:field bean="cardInstance" property="sources"/>--}%
 
             <div class="control-group">
                 <label class="control-label" for="sources"><g:message code="card.sources.label"/></label>
@@ -339,13 +328,3 @@
                 </div>
             </div>
         </div>
-
-        %{--<div class="form-actions">--}%
-            %{--<button type="submit" class="btn btn-primary">--}%
-                %{--<i class="icon-ok icon-white"></i>--}%
-                %{--<g:message code="default.button.create.label" default="Create" />--}%
-            %{--</button>--}%
-        %{--</div>--}%
-
-    %{--</g:form>--}%
-%{--</fieldset>--}%

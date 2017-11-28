@@ -37,7 +37,7 @@ class BootStrap {
                 break
         }
 
-        cardService.initAutocompletion(['localization', 'printer', 'author', 'editor'])
+        cardService.initAutocompletion(['printer', 'author', 'editor'])
     }
 
     def destroy = {
@@ -79,7 +79,7 @@ class BootStrap {
     private createFakeCataloguers() {
         def cataloguerRole = Role.findByAuthority('ROLE_CATALOG')
         if (!User.findByUsername('gino')) {
-            def shop = new User(username:"gino",
+            def shop = new User(username: "gino",
                 password: "passwd",
                 enabled: true).save(flush: true, failOnError: true)
             shop.save()

@@ -37,19 +37,19 @@ class ExportingService {
                 Paragraph signatureParagraph = new Paragraph()
                 signatureParagraph.add(new Chunk('Segnatura: ', BOLD))
                 signatureParagraph.add(new Chunk(card.signature))
-                signatureParagraph.add(new Chunk('Datazione: ', BOLD))
+                signatureParagraph.add(new Chunk('Cronologia: ', BOLD))
                 signatureParagraph.add(new Chunk(card.dating ?: ''))
                 descriptionCell.addElement(signatureParagraph)
 
                 Paragraph subjectParagraph = new Paragraph()
-                subjectParagraph.add(new Chunk('Soggetto: ', BOLD))
-                subjectParagraph.add(new Chunk(card.subject ?: ''))
+                subjectParagraph.add(new Chunk('Titolo: ', BOLD))
+                subjectParagraph.add(new Chunk(card.title ?: ''))
                 descriptionCell.addElement(subjectParagraph)
 
-                Paragraph localizationParagraph = new Paragraph()
-                localizationParagraph.add(new Chunk('Localizzazione :', BOLD))
-                localizationParagraph.add(new Chunk(card.localization ?: ''))
-                descriptionCell.addElement(localizationParagraph)
+//                Paragraph localizationParagraph = new Paragraph()
+//                localizationParagraph.add(new Chunk('Localizzazione :', BOLD))
+//                localizationParagraph.add(new Chunk(card.localization ?: ''))
+//                descriptionCell.addElement(localizationParagraph)
 
                 table.addCell(descriptionCell)
 
@@ -97,7 +97,7 @@ class ExportingService {
             table.addCell(new Phrase(card.fund.name))
             table.addCell(new Phrase('Segnatura'))
             table.addCell(new Phrase(card.signature))
-            table.addCell(new Phrase('Datazione'))
+            table.addCell(new Phrase('Cronologia'))
             table.addCell(new Phrase(card.dating?: ''))
 
             //Authors section
@@ -113,8 +113,6 @@ class ExportingService {
             table.addCell(new Phrase(card.title))
             table.addCell(new Phrase('Soggetto'))
             table.addCell(new Phrase(card.subject))
-            table.addCell(new Phrase(messageSource.getMessage('card.localization.label', [] as Object[], locale)))
-            table.addCell(new Phrase(card.localization?: ''))
             table.addCell(new Phrase('Iscrizioni'))
             table.addCell(new Phrase(card.inscription))
 
@@ -233,7 +231,7 @@ class ExportingService {
         p = new Paragraph()
         p.add(new Phrase("Segnatura: ${card.signature}"))
         p.add("             ")
-        p.add(new Phrase("Datazione: ${card.dating?: '' }"))
+        p.add(new Phrase("Cronologia: ${card.dating?: '' }"))
         document.add(p)
 
         //Authors section
@@ -254,9 +252,9 @@ class ExportingService {
         p.add(Chunk.NEWLINE)
         document.add(p)
 
-        p = new Phrase('Soggetto')
+        p = new Phrase('Titolo')
         document.add(p)
-        p = new Paragraph(card.subject)
+        p = new Paragraph(card.title)
         p.setIndentationLeft(14)
         document.add(p)
 

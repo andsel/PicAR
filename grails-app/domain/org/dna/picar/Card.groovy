@@ -16,7 +16,6 @@ class Card {
                 'printer',
                 'editor',
                 'inscription',
-                'localization',
                 'techniqueDescr',
                 'primarySupportDescr',
                 'secondarySupportDescr',
@@ -40,7 +39,6 @@ class Card {
     String printer
     String editor
     String inscription
-    String localization
     String technique //closed vocabulary
     String techniqueDescr
     String primarySupport //closed vocabulary
@@ -80,7 +78,6 @@ class Card {
         printer nullable: true
         editor nullable: true
         inscription nullable: false
-        localization nullable: true
         technique nullable: false
         primarySupport nullable: false
         primarySupportDimensions nullable: false

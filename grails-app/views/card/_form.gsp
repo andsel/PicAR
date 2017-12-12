@@ -139,16 +139,16 @@
 
         <div class="row-fluid">
             <div class="control-group ">
-                <label class="control-label" for="title"><g:message code="card.title.label" default="Title"/></label>
-                <div class="controls ${hasErrors(bean: 'cardInstance', field: 'title', 'error')}">
-                    <g:textArea name="subject" value="${cardInstance?.title}" rows="3" cols="40" class="span12"/>
+                <label class="control-label" for="subject"><g:message code="card.subject.label" default="Subject"/></label>
+                <div class="controls ${hasErrors(bean: 'cardInstance', field: 'subject', 'error')}">
+                    <g:textArea name="subject" value="${cardInstance?.subject}" rows="3" cols="40" class="span12"/>
                 </div>
             </div>
 
             <div class="control-group ">
-                <label class="control-label" for="subject"><g:message code="card.subject.label"/></label>
-                <div class="controls ${hasErrors(bean: 'cardInstance', field: 'subject', 'error')}">
-                    <g:field class="span12" name="title" type="text" value="${cardInstance.subject}"/>
+                <label class="control-label" for="title"><g:message code="card.title.label"/></label>
+                <div class="controls ${hasErrors(bean: 'cardInstance', field: 'title', 'error')}">
+                    <g:field class="span12" name="title" type="text" value="${cardInstance.title}"/>
                 </div>
             </div>
 

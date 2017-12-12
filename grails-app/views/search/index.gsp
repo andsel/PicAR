@@ -49,7 +49,7 @@
 
                         <div class="row">
                             <div class="span12">
-                                <g:message code="card.subject.label" default="Subject"/>: ${card.subject}
+                                <g:message code="card.title.label" default="Title"/>: ${card.title}
 
                                 %{--<g:if test="${!searchResult.highlights[resIdx].empty}">--}%
                                     %{--...${searchResult.highlights[resIdx]}...--}%

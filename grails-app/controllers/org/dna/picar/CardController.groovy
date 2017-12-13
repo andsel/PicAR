@@ -1,5 +1,6 @@
 package org.dna.picar
 
+import com.sun.org.apache.bcel.internal.generic.StoreInstruction
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.servlet.support.RequestContextUtils
 import grails.converters.JSON
@@ -220,11 +221,22 @@ class CardController {
         }
 
         try {
+            //delete also stored images
+            File destinationDir = getDestinationDir()
+
+            List<StoredImage> images = cardInstance.images.collect()
+            for (StoredImage image : images) {
+                String err = imageService.deleteImage(image, destinationDir)
+                cardInstance.errors.rejectValue('images', 'default.optimistic.locking.failure',
+                        [message(code: 'card.label', default: 'Card')] as Object[],
+                        err)
+            }
+
             cardInstance.delete(flush: true)
+
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'card.label', default: 'Card'), params.id])
             redirect action: 'list'
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'card.label', default: 'Card'), params.id])
             redirect action: 'show', id: params.id
         }

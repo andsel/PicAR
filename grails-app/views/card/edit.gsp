@@ -18,7 +18,9 @@
 
 	<body>
         <div class="row-fluid">
-            <g:link class="btn btn-primary" action="exportCard" target="_" id="${cardInstance.id}"><g:message code="button.exportpdf.label"/></g:link>
+            <g:link class="btn btn-primary" action="exportCard" target="_" id="${cardInstance.id}">
+                <g:message code="button.exportpdf.label"/>
+            </g:link>
         </div>
 
 		<div class="row-fluid">
@@ -33,11 +35,17 @@
 				<bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
 				</g:if>
 
+                <g:if test="${flash.error}">
+                    <bootstrap:alert class="alert-error">${flash.error}</bootstrap:alert>
+                </g:if>
+
 				<g:hasErrors bean="${cardInstance}">
 				<bootstrap:alert class="alert-error">
 				<ul>
 					<g:eachError bean="${cardInstance}" var="error">
-					<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+					<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
+                        <g:message error="${error}"/>
+                    </li>
 					</g:eachError>
 				</ul>
 				</bootstrap:alert>

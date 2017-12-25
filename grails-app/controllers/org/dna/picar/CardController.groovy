@@ -139,7 +139,7 @@ class CardController {
         File destinationDir = getDestinationDir()
         String err = imageService.deleteImage(image, destinationDir)
         if (err) {
-            flash.message = message(code: err)
+            flash.error = message(code: err)
             redirect action: 'edit', id: card.id
             return
         }

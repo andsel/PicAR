@@ -40,22 +40,39 @@ class ImageService {
      * */
     String deleteImage(StoredImage image, File destinationDir) {
         //check not collision in filesystem
-        File thumbFile = new File(destinationDir, "${image.fileName}_thumb.png")
-        boolean deleted = thumbFile.delete()
-        if (!deleted) {
-            log.error "Can't remove file $thumbFile from disk"
-            return 'card.image.thumb.not.delete'
+        def thumbFileName = "${image.fileName}_thumb.png"
+        File thumbFile = new File(destinationDir, thumbFileName)
+        String errorLabel = ''
+        if (thumbFile.exists()) {
+            boolean deleted = thumbFile.delete()
+            if (!deleted) {
+                log.error "Can't remove file $thumbFile from disk"
+                return 'card.image.thumb.not.delete'
+            }
+        } else {
+            log.warn "Thumb file [$thumbFileName] doesn't exists on disk, probably removed by hand from filesystem"
+            errorLabel = 'card.image.thumb.not.found'
         }
 
-        File originalFile = new File(destinationDir, "${image.fileName}.${image.extension}")
-        deleted = originalFile.delete()
-        if (!deleted) {
-            log.error "Can't remove file $originalFile from disk"
-            return 'card.image.original.not.delete'
+        def imageFileName = "${image.fileName}.${image.extension}"
+        File originalFile = new File(destinationDir, imageFileName)
+        if (originalFile.exists()) {
+            deleted = originalFile.delete()
+            if (!deleted) {
+                log.error "Can't remove file $originalFile from disk"
+                return 'card.image.original.not.delete'
+            }
+        } else {
+            log.warn "Image file [$imageFileName] doesn't exists on disk, probably removed by hand from filesystem"
+            errorLabel = 'card.image.original.not.found'
         }
 
         Card card = image.card
         card.removeFromImages(image)
         image.delete()
+
+        if (errorLabel != '') {
+            return errorLabel
+        }
     }
 }

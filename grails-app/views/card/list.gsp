@@ -28,7 +28,7 @@
 						
 							<g:sortableColumn property="signature" title="${message(code: 'card.signature.label', default: 'Signature')}" />
 						
-							<g:sortableColumn property="subject" title="${message(code: 'card.subject.label', default: 'Subject')}" />
+							<g:sortableColumn property="title" title="${message(code: 'card.title.label', default: 'Title')}" />
 						
 							<g:sortableColumn property="header" title="${message(code: 'card.header.label', default: 'Header')}" />
 						
@@ -44,7 +44,7 @@
 						
 							<td>${fieldValue(bean: cardInstance, field: "signature")}</td>
 						
-							<td>${fieldValue(bean: cardInstance, field: "subject")}</td>
+							<td>${fieldValue(bean: cardInstance, field: "title")}</td>
 						
 							<td class="link">
 								<g:link action="show" id="${cardInstance.id}" class="btn btn-small">Show &raquo;</g:link>

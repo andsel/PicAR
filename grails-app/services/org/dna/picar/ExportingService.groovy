@@ -21,6 +21,7 @@ class ExportingService {
 
     private static final Font BOLD = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)
     private static final int PHOTO_WIDTH = 60 //mm
+    private static final int PHOTO_HEIGHT = 120 //mm
 
     def messageSource
 
@@ -35,14 +36,17 @@ class ExportingService {
             for (Card card : Card.list([sort: 'inventoryNumber', order: 'asc'])) {
                 PdfPCell descriptionCell = new PdfPCell()
                 Paragraph signatureParagraph = new Paragraph()
-                signatureParagraph.add(new Chunk('Segnatura: ', BOLD))
+                signatureParagraph.add(new Chunk('Segnatura: '))
                 signatureParagraph.add(new Chunk(card.signature))
-                signatureParagraph.add(new Chunk('Cronologia: ', BOLD))
-                signatureParagraph.add(new Chunk(card.dating ?: ''))
                 descriptionCell.addElement(signatureParagraph)
 
+                Paragraph chronoParagraph = new Paragraph()
+                chronoParagraph.add(new Chunk('Cronologia: '))
+                chronoParagraph.add(new Chunk(card.dating ?: ''))
+                descriptionCell.addElement(chronoParagraph)
+
                 Paragraph subjectParagraph = new Paragraph()
-                subjectParagraph.add(new Chunk('Titolo: ', BOLD))
+                subjectParagraph.add(new Chunk('Titolo: '))
                 subjectParagraph.add(new Chunk(card.title ?: ''))
                 descriptionCell.addElement(subjectParagraph)
 
@@ -64,7 +68,7 @@ class ExportingService {
                     img.setAlignment(Element.ALIGN_CENTER)
 
                     img.scaleToFit(10000, (float)Utilities.millimetersToPoints(PHOTO_WIDTH) - 2 * borderWidth)
-                    table.addCell(new PdfPCell(img))
+                    table.addCell(img)
                 } else {
                     //add empty cell
                     table.addCell('No image')

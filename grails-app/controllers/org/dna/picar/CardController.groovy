@@ -1,6 +1,5 @@
 package org.dna.picar
 
-import com.sun.org.apache.bcel.internal.generic.StoreInstruction
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.servlet.support.RequestContextUtils
 import grails.converters.JSON
@@ -29,6 +28,8 @@ class CardController {
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.sort = 'inventoryNumber'
+        params.order = 'asc'
         [cardInstanceList: Card.list(params), cardInstanceTotal: Card.count()]
     }
 
@@ -259,7 +260,31 @@ class CardController {
     def exportCatalog() {
         File destinationDir = getDestinationDir()
         def locale = RequestContextUtils.getLocale(request)
-        ByteArrayOutputStream mempdf = exportingService.generateCatalogDoc(destinationDir, locale)
+        def cardsToExport = Card.list([sort: 'inventoryNumber', order: 'asc'])
+        ByteArrayOutputStream mempdf = exportingService.generateCatalogDoc(destinationDir, locale, cardsToExport)
+        response.setContentType("application/pdf")
+        response.setContentLength(mempdf.size())
+
+        OutputStream os = response.outputStream
+        mempdf.writeTo(os)
+        os.flush()
+        os.close()
+    }
+
+    /**
+     * Read the params.max and offset to create a limited page export
+     * */
+    def exportPagedCatalog() {
+        File destinationDir = getDestinationDir()
+        def locale = RequestContextUtils.getLocale(request)
+
+        params.offset = params.int('offset') ?: 0
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.sort = 'inventoryNumber'
+        params.order = 'asc'
+
+        def cardsToExport = Card.list(params /*[offset: params.offset, max: params.max, sort: 'inventoryNumber', order: 'asc']*/)
+        ByteArrayOutputStream mempdf = exportingService.generateCatalogDoc(destinationDir, locale, cardsToExport)
         response.setContentType("application/pdf")
         response.setContentLength(mempdf.size())
 

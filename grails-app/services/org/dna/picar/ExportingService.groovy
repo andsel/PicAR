@@ -25,7 +25,7 @@ class ExportingService {
 
     def messageSource
 
-    ByteArrayOutputStream generateCatalogDoc(File destinationDir, Locale locale) {
+    ByteArrayOutputStream generateCatalogDoc(File destinationDir, Locale locale, def cardsToExport) {
         try {
             def document = new Document()
             ByteArrayOutputStream baos = new ByteArrayOutputStream()
@@ -33,7 +33,8 @@ class ExportingService {
             document.open()
             PdfPTable table = new PdfPTable(2)
             table.setTotalWidth([402 - Utilities.millimetersToPoints(PHOTO_WIDTH), Utilities.millimetersToPoints(PHOTO_WIDTH)] as float[])
-            for (Card card : Card.list([sort: 'inventoryNumber', order: 'asc'])) {
+
+            for (Card card : cardsToExport) {
                 PdfPCell descriptionCell = new PdfPCell()
                 Paragraph signatureParagraph = new Paragraph()
                 signatureParagraph.add(new Chunk('Segnatura: '))
@@ -217,130 +218,130 @@ class ExportingService {
         }
     }
 
-    def generateCardDocOld(Card card, File destinationDir) {
-        //TODO localizzare tutte le stringhe dalla classe di dominio
-        def document = new Document()
-        PdfWriter.getInstance(document, new FileOutputStream("/tmp/hello.pdf"))
-        document.open()
-
-        //Identification section
-        addSectionHeader('Identificazione', document)
-
-        def p = new Paragraph()
-        p.add(new Phrase("Inventario: ${card.inventoryNumber}"))
-        p.add("             ")
-        p.add(new Phrase("Fondo: ${card.fund.name}"))
-        document.add(p)
-
-        p = new Paragraph()
-        p.add(new Phrase("Segnatura: ${card.signature}"))
-        p.add("             ")
-        p.add(new Phrase("Cronologia: ${card.dating?: '' }"))
-        document.add(p)
-
-        //Authors section
-        addSectionHeader('Autori', document)
-
-        p = new Paragraph()
-        p.add(new Phrase("Autore: ${card.authorNotFound? 'non trovato': card.author}"))
-        p.add("             ")
-        p.add(new Phrase("Stampatore: ${card.printer ?: ''}"))
-        p.add("             ")
-        p.add(new Phrase("Editore: ${card.editor ?: ''}"))
-        document.add(p)
-
-        //Description section
-        addSectionHeader('Descrizione', document)
-        p = new Paragraph()
-        p.add(new Phrase("Titolo: ${card.title}"))
-        p.add(Chunk.NEWLINE)
-        document.add(p)
-
-        p = new Phrase('Titolo')
-        document.add(p)
-        p = new Paragraph(card.title)
-        p.setIndentationLeft(14)
-        document.add(p)
-
-        p = new Phrase('Iscrizioni')
-        document.add(p)
-        p = new Paragraph(card.inscription)
-        p.setIndentationLeft(14)
-        document.add(p)
-
-        //Technical description
-        addSectionHeader('Descrizione tecnica', document)
-        p = new Paragraph()
-        p.add(new Phrase("Oggetto: ${card.object ?: ''}"))
-        p.add("             ")
-        p.add(new Phrase("Indicazione colore: ${card.colorIndication ?: ''}"))
-        p.add("             ")
-        p.add(Chunk.NEWLINE)
-        p.add(new Phrase("Tecnica fotografica: ${card.technique ?: ''}"))
-        p.add("             ")
-        p.add(new Phrase("Supporto primario: ${card.primarySupport} "))
-        if (card.primarySupportDimensions && card.primarySupportDimensions.height) {
-            p.add(new Chunk(card.primarySupportDimensions.height as String))
-            p.add(new Chunk(' h (mm) '))
-            p.add(new Chunk(card.primarySupportDimensions.width as String))
-            p.add(new Chunk(' l (mm) '))
-        }
-        document.add(p)
-
-        if (card.secondarySupport && card.secondarySupport != 'not_present') {
-            p = new Paragraph()
-            p.add(new Phrase("Supporto secondario: ${card.secondarySupport} "))
-            if (card.secondarySupportDimensions && card.secondarySupportDimensions.height) {
-                p.add(new Chunk(card.secondarySupportDimensions.height as String))
-                p.add(new Chunk(' h (mm) '))
-                p.add(new Chunk(card.secondarySupportDimensions.width as String))
-                p.add(new Chunk(' l (mm) '))
-            }
-            document.add(p)
-        }
-        p = new Phrase(' Dettagli stato di conservazione')
-        document.add(p)
-        p = new Paragraph(card.statusDetails)
-        p.setIndentationLeft(14)
-        document.add(p)
-
-        //Other section
-        addSectionHeader('Altro', document)
-        document.add(new Phrase("Bibliografia:"))
-        document.add(Chunk.NEWLINE)
-        for (String nota in card.bibliography) {
-            p = new Paragraph(nota)
-            p.setIndentationLeft(14)
-            document.add(p)
-        }
-
-        document.add(new Phrase("Documenti di riferimento:"))
-        document.add(Chunk.NEWLINE)
-        for (String ref in card.sources) {
-            p = new Paragraph(ref)
-            p.setIndentationLeft(14)
-            document.add(p)
-        }
-
-        document.add(new Phrase("Osservazioni:"))
-        document.add(Chunk.NEWLINE)
-        p = new Paragraph(card.observations)
-        p.setIndentationLeft(14)
-        document.add(p)
-
-        //add all images
-        for (StoredImage stImage in card.images) {
-            File thumbFile = new File(destinationDir, "${stImage.fileName}_thumb.png")
-            document.add(Image.getInstance(thumbFile.bytes))
-        }
-
-        document.close()
-    }
-
-
-    private addSectionHeader(String name, Document document) {
-        def sectionHeader = new Phrase(name, BOLD)
-        document.add(sectionHeader)
-        document.add(Chunk.NEWLINE)
-    }
+//    def generateCardDocOld(Card card, File destinationDir) {
+//        //TODO localizzare tutte le stringhe dalla classe di dominio
+//        def document = new Document()
+//        PdfWriter.getInstance(document, new FileOutputStream("/tmp/hello.pdf"))
+//        document.open()
+//
+//        //Identification section
+//        addSectionHeader('Identificazione', document)
+//
+//        def p = new Paragraph()
+//        p.add(new Phrase("Inventario: ${card.inventoryNumber}"))
+//        p.add("             ")
+//        p.add(new Phrase("Fondo: ${card.fund.name}"))
+//        document.add(p)
+//
+//        p = new Paragraph()
+//        p.add(new Phrase("Segnatura: ${card.signature}"))
+//        p.add("             ")
+//        p.add(new Phrase("Cronologia: ${card.dating?: '' }"))
+//        document.add(p)
+//
+//        //Authors section
+//        addSectionHeader('Autori', document)
+//
+//        p = new Paragraph()
+//        p.add(new Phrase("Autore: ${card.authorNotFound? 'non trovato': card.author}"))
+//        p.add("             ")
+//        p.add(new Phrase("Stampatore: ${card.printer ?: ''}"))
+//        p.add("             ")
+//        p.add(new Phrase("Editore: ${card.editor ?: ''}"))
+//        document.add(p)
+//
+//        //Description section
+//        addSectionHeader('Descrizione', document)
+//        p = new Paragraph()
+//        p.add(new Phrase("Titolo: ${card.title}"))
+//        p.add(Chunk.NEWLINE)
+//        document.add(p)
+//
+//        p = new Phrase('Titolo')
+//        document.add(p)
+//        p = new Paragraph(card.title)
+//        p.setIndentationLeft(14)
+//        document.add(p)
+//
+//        p = new Phrase('Iscrizioni')
+//        document.add(p)
+//        p = new Paragraph(card.inscription)
+//        p.setIndentationLeft(14)
+//        document.add(p)
+//
+//        //Technical description
+//        addSectionHeader('Descrizione tecnica', document)
+//        p = new Paragraph()
+//        p.add(new Phrase("Oggetto: ${card.object ?: ''}"))
+//        p.add("             ")
+//        p.add(new Phrase("Indicazione colore: ${card.colorIndication ?: ''}"))
+//        p.add("             ")
+//        p.add(Chunk.NEWLINE)
+//        p.add(new Phrase("Tecnica fotografica: ${card.technique ?: ''}"))
+//        p.add("             ")
+//        p.add(new Phrase("Supporto primario: ${card.primarySupport} "))
+//        if (card.primarySupportDimensions && card.primarySupportDimensions.height) {
+//            p.add(new Chunk(card.primarySupportDimensions.height as String))
+//            p.add(new Chunk(' h (mm) '))
+//            p.add(new Chunk(card.primarySupportDimensions.width as String))
+//            p.add(new Chunk(' l (mm) '))
+//        }
+//        document.add(p)
+//
+//        if (card.secondarySupport && card.secondarySupport != 'not_present') {
+//            p = new Paragraph()
+//            p.add(new Phrase("Supporto secondario: ${card.secondarySupport} "))
+//            if (card.secondarySupportDimensions && card.secondarySupportDimensions.height) {
+//                p.add(new Chunk(card.secondarySupportDimensions.height as String))
+//                p.add(new Chunk(' h (mm) '))
+//                p.add(new Chunk(card.secondarySupportDimensions.width as String))
+//                p.add(new Chunk(' l (mm) '))
+//            }
+//            document.add(p)
+//        }
+//        p = new Phrase(' Dettagli stato di conservazione')
+//        document.add(p)
+//        p = new Paragraph(card.statusDetails)
+//        p.setIndentationLeft(14)
+//        document.add(p)
+//
+//        //Other section
+//        addSectionHeader('Altro', document)
+//        document.add(new Phrase("Bibliografia:"))
+//        document.add(Chunk.NEWLINE)
+//        for (String nota in card.bibliography) {
+//            p = new Paragraph(nota)
+//            p.setIndentationLeft(14)
+//            document.add(p)
+//        }
+//
+//        document.add(new Phrase("Documenti di riferimento:"))
+//        document.add(Chunk.NEWLINE)
+//        for (String ref in card.sources) {
+//            p = new Paragraph(ref)
+//            p.setIndentationLeft(14)
+//            document.add(p)
+//        }
+//
+//        document.add(new Phrase("Osservazioni:"))
+//        document.add(Chunk.NEWLINE)
+//        p = new Paragraph(card.observations)
+//        p.setIndentationLeft(14)
+//        document.add(p)
+//
+//        //add all images
+//        for (StoredImage stImage in card.images) {
+//            File thumbFile = new File(destinationDir, "${stImage.fileName}_thumb.png")
+//            document.add(Image.getInstance(thumbFile.bytes))
+//        }
+//
+//        document.close()
+//    }
+//
+//
+//    private addSectionHeader(String name, Document document) {
+//        def sectionHeader = new Phrase(name, BOLD)
+//        document.add(sectionHeader)
+//        document.add(Chunk.NEWLINE)
+//    }
 }

@@ -9,6 +9,13 @@
 	</head>
 	<body>
 		<div class="row-fluid">
+			<g:link class="btn btn-primary" action="exportPagedCatalog" target="_"
+                    params="[offset: params.offset, max: params.max]">
+				<g:message code="button.exportpdf.label"/>
+			</g:link>
+		</div>
+
+		<div class="row-fluid">
 			
 			<div class="span12">
 				

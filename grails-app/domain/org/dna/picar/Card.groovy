@@ -19,6 +19,7 @@ class Card {
                 'techniqueDescr',
                 'primarySupportDescr',
                 'secondarySupportDescr',
+                'conservationStatusDescr',
                 'statusDetailsDescr',
                 'sources',
                 'bibliography',

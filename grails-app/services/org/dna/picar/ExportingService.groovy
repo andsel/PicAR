@@ -51,10 +51,15 @@ class ExportingService {
                 subjectParagraph.add(new Chunk(card.title ?: ''))
                 descriptionCell.addElement(subjectParagraph)
 
-//                Paragraph localizationParagraph = new Paragraph()
-//                localizationParagraph.add(new Chunk('Localizzazione :', BOLD))
-//                localizationParagraph.add(new Chunk(card.localization ?: ''))
-//                descriptionCell.addElement(localizationParagraph)
+                Paragraph authorParagraph = new Paragraph()
+                authorParagraph.add(new Chunk('Autore: '))
+                authorParagraph.add(new Chunk(card.author?: ''))
+                descriptionCell.addElement(authorParagraph)
+
+                Paragraph editorParagraph = new Paragraph()
+                editorParagraph.add(new Chunk('Editore: '))
+                editorParagraph.add(new Chunk(card.editor?: ''))
+                descriptionCell.addElement(editorParagraph)
 
                 table.addCell(descriptionCell)
 

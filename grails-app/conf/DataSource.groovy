@@ -18,6 +18,15 @@ environments {
             pooled = true
             dialect = "org.hibernate.dialect.H2Dialect"
         }
+//
+//        // ENABLE to use real world data
+//        dataSource {
+//            workspace.dir = System.getProperty('workspace.dir')
+//            dbCreate = ""
+//            url = "jdbc:h2:${workspace.dir}/standaloneDb;MVCC=TRUE"
+//            pooled = true
+//            dialect = "org.hibernate.dialect.H2Dialect"
+//        }
     }
     test {
         dataSource {
